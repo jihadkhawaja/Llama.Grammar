@@ -25,7 +25,8 @@ dotnet add package Llama.Grammar
 ## Usage
 
 ```csharp
-using Llama.Grammar;
+using Llama.Grammar.Helper;
+using Llama.Grammar.Service;
 
 var schemaBuilder = new SchemaBuilder()
     .Type("object")
