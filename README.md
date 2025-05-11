@@ -40,7 +40,8 @@ var schemaBuilder = new SchemaBuilder()
 
 string json = schemaBuilder.ToJson();
 
-string gbnf = JsonSchemaToGbnf.Convert(json);
+IGbnfGrammar grammar = new GbnfGrammar();
+var gbnf = grammar.ConvertJsonSchemaToGbnf(json);
 Console.WriteLine(gbnf);
 ```
 
