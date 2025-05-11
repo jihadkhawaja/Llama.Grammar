@@ -50,9 +50,7 @@ Console.WriteLine(gbnf);
 
 ## Based on
 
-This project is based on the excellent work by [Adrien Brault](https://github.com/adrienbrault/json-schema-to-gbnf), porting and wrapping his TypeScript/JavaScript logic for use in .NET.
-
-GitHub: [https://github.com/adrienbrault/json-schema-to-gbnf](https://github.com/adrienbrault/json-schema-to-gbnf)
+This project is based on the excellent work by [Adrien Brault](https://github.com/adrienbrault/json-schema-to-gbnf), porting and wrapping his TypeScript logic for use in .NET.
 
 ## License
 
