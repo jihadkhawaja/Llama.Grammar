@@ -57,10 +57,3 @@ GitHub: [https://github.com/adrienbrault/json-schema-to-gbnf](https://github.com
 ## License
 
 MIT License. See [LICENSE](LICENSE) for details.
-
-```
-
----
-
-Would you like a badge set (NuGet, license, GitHub stars, etc.) added at the top?
-```
