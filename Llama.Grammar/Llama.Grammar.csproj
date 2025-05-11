@@ -14,7 +14,7 @@
 	<RepositoryUrl>https://github.com/jihadkhawaja/Llama.Grammar</RepositoryUrl>
 	<PackageProjectUrl>https://github.com/jihadkhawaja/Llama.Grammar</PackageProjectUrl>
 	<PackageTags>llama, gbnf, converter, json, grammar, llama grammar, llama gbnf, C# llama grammar</PackageTags>
-	<Version>1.0.3</Version>
+	<Version>1.0.4</Version>
   </PropertyGroup>
 
 	<ItemGroup>
