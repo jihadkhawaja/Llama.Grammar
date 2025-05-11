@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Llama.Grammar", "Llama.Grammar\Llama.Grammar.csproj", "{24241FBB-7BF8-4D2F-AD52-BA585E6ED3BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Llama.Grammar.Test", "Llama.Grammar.Test\Llama.Grammar.Test.csproj", "{0DC73C7F-81B9-493E-A4DC-73D8AA35DEED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{24241FBB-7BF8-4D2F-AD52-BA585E6ED3BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24241FBB-7BF8-4D2F-AD52-BA585E6ED3BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24241FBB-7BF8-4D2F-AD52-BA585E6ED3BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24241FBB-7BF8-4D2F-AD52-BA585E6ED3BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DC73C7F-81B9-493E-A4DC-73D8AA35DEED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DC73C7F-81B9-493E-A4DC-73D8AA35DEED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DC73C7F-81B9-493E-A4DC-73D8AA35DEED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DC73C7F-81B9-493E-A4DC-73D8AA35DEED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F4A08EA5-D58B-4D76-AFE6-84CEA851A611}
+	EndGlobalSection
+EndGlobal
