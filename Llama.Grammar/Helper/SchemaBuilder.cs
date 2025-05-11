@@ -38,7 +38,6 @@ namespace Llama.Grammar.Helper
 
         public SchemaBuilder Nullable()
         {
-            // turn "type":"string" into ["string","null"], or add nullable:true
             if (_schema.TryGetValue("type", out var t) && t is string s)
                 _schema["type"] = new[] { s, "null" };
             else
