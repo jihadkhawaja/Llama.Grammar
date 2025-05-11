@@ -52,4 +52,4 @@ This project is based on the excellent work by [Adrien Brault](https://github.co
 
 ## License
 
-MIT License. See [LICENSE](LICENSE) for details.
+MIT License. See [[LICENSE](LICENSE)](https://github.com/jihadkhawaja/Llama.Grammar?tab=License-1-ov-file#readme). for details.
