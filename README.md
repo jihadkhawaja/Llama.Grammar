@@ -5,7 +5,7 @@
 ## Features
 
 - 🧱 Fluent builder API for creating JSON Schema objects in C#
-- 🧠 Converts JSON Schema to GBNF using Adrien Brault’s original grammar logic
+- 🧠 Converts JSON Schema to GBNF
 - ✅ Supports complex schema features like:
   - Nested objects
   - Arrays and array constraints
