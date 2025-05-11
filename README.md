@@ -32,15 +32,18 @@ dotnet add package Llama.Grammar
 ```csharp
 using Llama.Grammar;
 
-var schema = new SchemaBuilder()
+var schemaBuilder = new SchemaBuilder()
     .Type("object")
     .Properties(p => p
         .Add("name", s => s.Type("string"))
         .Add("age", s => s.Type("integer"))
-    )
+        .Add("nicknames", s => s.Type("array")
+                                    .MinItems(1)
+                                    .MaxItems(3)
+                                    .Items(i => i.Type("string"))))
     .Required("name", "age");
 
-string json = schema.ToJson();
+string json = schemaBuilder.ToJson();
 
 string gbnf = JsonSchemaToGbnf.Convert(json);
 Console.WriteLine(gbnf);

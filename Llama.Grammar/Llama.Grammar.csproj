@@ -4,7 +4,21 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Authors>jihadkhawaja</Authors>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>Llama Grammar</Title>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+	<Authors>jihadkhawaja</Authors>
+	<Description>GBNF converter for llama.cpp Grammar directly from C# types</Description>
+	<Copyright>Copyright © 2025 jihadkhawaja</Copyright>
+	<RepositoryUrl>https://github.com/jihadkhawaja/Llama.Grammar</RepositoryUrl>
+	<PackageProjectUrl>https://github.com/jihadkhawaja/Llama.Grammar</PackageProjectUrl>
+	<PackageTags>llama, gbnf, converter, json, grammar, llama grammar, llama gbnf, C# llama grammar</PackageTags>
   </PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\README.md" Pack="true" PackagePath="" />
+		<None Include="..\LICENSE.md" Pack="true" PackagePath="" />
+	</ItemGroup>
 
 </Project>
