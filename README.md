@@ -24,6 +24,11 @@ dotnet add package Llama.Grammar
 
 ## Usage
 
+### Generating GBNF using fluent API
+
+You can create JSON Schemas using the fluent API and convert them to GBNF grammars. Here's an example of how to do this
+
+
 ```csharp
 using Llama.Grammar.Helper;
 using Llama.Grammar.Service;
@@ -44,6 +49,33 @@ string json = schemaBuilder.ToJson();
 IGbnfGrammar grammar = new GbnfGrammar();
 var gbnf = grammar.ConvertJsonSchemaToGbnf(json);
 Console.WriteLine(gbnf);
+```
+
+### Generating GBNF from C# Types
+
+You can generate GBNF grammars directly from C# types, including nested objects and collections
+
+
+```
+public class TestPerson
+{
+    public string Name { get; set; } = string.Empty;
+    public int Age { get; set; }
+    public List<string> Nicknames { get; set; } = new();
+    public Address? HomeAddress { get; set; }
+}
+
+public class Address
+{
+    public string Street { get; set; } = string.Empty;
+    public string City { get; set; } = string.Empty;
+    public string? ZipCode { get; set; }
+}
+
+IGbnfGrammar grammar = new GbnfGrammar();
+var gbnf = grammar.ConvertTypeToGbnf<TestPerson>();
+Console.WriteLine(gbnf);
+
 ```
 
 ## Based on

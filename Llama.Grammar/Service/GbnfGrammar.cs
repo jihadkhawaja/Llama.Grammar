@@ -9,5 +9,11 @@ namespace Llama.Grammar.Service
 
         public string ConvertRegexpToGbnf(string regexp)
             => RegexToGbnf.Convert(regexp);
+
+        public string ConvertTypeToGbnf<T>()
+        {
+            var jsonSchema = TypeToJsonSchema.Convert<T>();
+            return ConvertJsonSchemaToGbnf(jsonSchema);
+        }
     }
 }

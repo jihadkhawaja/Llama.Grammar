@@ -15,5 +15,12 @@
         /// <param name="regexp">The regular expression string.</param>
         /// <returns>The GBNF grammar string.</returns>
         string ConvertRegexpToGbnf(string regexp);
+
+        /// <summary>
+        /// Converts a C# type to GBNF grammar.
+        /// </summary>
+        /// <typeparam name="T">The C# type to convert.</typeparam>
+        /// <returns>The GBNF grammar string.</returns>
+        string ConvertTypeToGbnf<T>();
     }
 }
