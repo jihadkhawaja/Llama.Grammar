@@ -56,7 +56,7 @@ Console.WriteLine(gbnf);
 You can generate GBNF grammars directly from C# types, including nested objects and collections
 
 
-```
+```csharp
 public class TestPerson
 {
     public string Name { get; set; } = string.Empty;
