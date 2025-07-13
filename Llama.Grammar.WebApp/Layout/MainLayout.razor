@@ -9,8 +9,7 @@
         <MudSpacer />
         <MudText Typo="Typo.h5" Class="ml-3">Llama.Grammar</MudText>
         <MudSpacer />
-        <MudIconButton Icon="@(ThemeService.IsDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)" 
-                       Color="Color.Inherit" OnClick="@ToggleTheme" />
+
         <MudButton Href="https://github.com/jihadkhawaja/Llama.Grammar" Target="_blank" 
                    StartIcon="Icons.Material.Filled.Info" Color="Color.Inherit">
             About
@@ -22,9 +21,10 @@
     </MudDrawer>
     
     <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.Medium" Class="mt-16">
+        <MudContainer MaxWidth="MaxWidth.Medium" Class="mt-16 mb-4" Style="min-height: calc(100vh - 200px);">
             @Body
         </MudContainer>
+        <Footer />
     </MudMainContent>
 </MudLayout>
 
@@ -41,10 +41,7 @@
         _drawerOpen = !_drawerOpen;
     }
 
-    void ToggleTheme()
-    {
-        ThemeService.ToggleTheme();
-    }
+
 
     public void Dispose()
     {
