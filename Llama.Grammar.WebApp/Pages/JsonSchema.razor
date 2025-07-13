@@ -4,123 +4,118 @@
 
 <PageTitle>JSON Schema to GBNF</PageTitle>
 
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="mb-4">JSON Schema to GBNF Converter</h1>
-            <p class="lead">
-                Convert JSON Schema definitions to GBNF grammars. You can either use the fluent builder or provide raw JSON schema.
-            </p>
-        </div>
-    </div>
+<MudText Typo="Typo.h4" GutterBottom="true">JSON Schema to GBNF Converter</MudText>
+<MudText Typo="Typo.h6" Class="mb-6 mud-text-secondary">
+    Convert JSON Schema definitions to GBNF grammars. You can either use the fluent builder or provide raw JSON schema.
+</MudText>
 
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <ul class="nav nav-tabs card-header-tabs" id="inputTabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link @(useBuilder ? "active" : "")" 
-                                    @onclick="() => useBuilder = true" 
-                                    type="button">Builder</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link @(!useBuilder ? "active" : "")" 
-                                    @onclick="() => useBuilder = false" 
-                                    type="button">Raw JSON</button>
-                        </li>
-                    </ul>
-                </div>
-                <div class="card-body">
-                    @if (useBuilder)
-                    {
-                        <div class="mb-3">
-                            <label class="form-label">Examples</label>
-                            <div class="d-flex gap-2 flex-wrap">
-                                <button class="btn btn-outline-secondary btn-sm" @onclick="LoadPersonExample">Person</button>
-                                <button class="btn btn-outline-secondary btn-sm" @onclick="LoadProductExample">Product</button>
-                                <button class="btn btn-outline-secondary btn-sm" @onclick="LoadCustomExample">Custom</button>
-                            </div>
-                        </div>
-                        <div class="alert alert-info">
-                            <small>Using builder mode - this generates the JSON schema using the fluent API.</small>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="mb-3">
-                            <label for="jsonSchemaInput" class="form-label">JSON Schema</label>
-                            <textarea class="form-control font-monospace" 
-                                     id="jsonSchemaInput" 
-                                     rows="15" 
-                                     @bind="jsonSchemaInput" 
-                                     placeholder="Enter your JSON Schema here..."></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <button class="btn btn-outline-secondary btn-sm" @onclick="LoadJsonExample">Load Example</button>
-                        </div>
-                    }
-                    
-                    <button class="btn btn-primary" @onclick="ConvertToGbnf" disabled="@isProcessing">
-                        @if (isProcessing)
-                        {
-                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                        }
-                        Convert to GBNF
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">GBNF Output</h5>
-                </div>
-                <div class="card-body">
-                    @if (!string.IsNullOrEmpty(errorMessage))
-                    {
-                        <div class="alert alert-danger">
-                            <strong>Error:</strong> @errorMessage
-                        </div>
-                    }
-                    @if (!string.IsNullOrEmpty(gbnfOutput))
-                    {
-                        <div class="mb-3">
-                            <button class="btn btn-outline-secondary btn-sm" @onclick="CopyToClipboard">
-                                Copy to Clipboard
-                            </button>
-                        </div>
-                        <pre class="bg-light p-3 rounded"><code>@gbnfOutput</code></pre>
-                    }
-                    else if (!isProcessing)
-                    {
-                        <p class="text-muted">Convert a JSON schema to see the GBNF output here.</p>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
+<MudGrid>
+    <MudItem xs="12" lg="6">
+        <MudCard Elevation="2">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudTabs Elevation="0" Rounded="true" PanelClass="pa-4" @bind-ActivePanelIndex="activeTabIndex">
+                        <MudTabPanel Text="Builder">
+                            <MudStack Spacing="4">
+                                <div>
+                                    <MudText Typo="Typo.subtitle2" Class="mb-2">Examples</MudText>
+                                    <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small">
+                                        <MudButton OnClick="LoadPersonExample">Person</MudButton>
+                                        <MudButton OnClick="LoadProductExample">Product</MudButton>
+                                        <MudButton OnClick="LoadCustomExample">Custom</MudButton>
+                                    </MudButtonGroup>
+                                </div>
+                                <MudAlert Severity="Severity.Info">
+                                    Using builder mode - this generates the JSON schema using the fluent API.
+                                </MudAlert>
+                            </MudStack>
+                        </MudTabPanel>
+                        <MudTabPanel Text="Raw JSON">
+                            <MudStack Spacing="4">
+                                <MudTextField T="string" @bind-Value="jsonSchemaInput" 
+                                             Label="JSON Schema" Variant="Variant.Outlined" 
+                                             Lines="15" Placeholder="Enter your JSON Schema here..."
+                                             Class="mud-font-family-monospace" />
+                                <MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="LoadJsonExample">
+                                    Load Example
+                                </MudButton>
+                            </MudStack>
+                        </MudTabPanel>
+                    </MudTabs>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardActions>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" 
+                          OnClick="ConvertToGbnf" Disabled="isProcessing"
+                          StartIcon="@(isProcessing ? Icons.Material.Filled.HourglassTop : Icons.Material.Filled.Transform)">
+                    Convert to GBNF
+                </MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+    
+    <MudItem xs="12" lg="6">
+        <MudCard Elevation="2" Style="height: 100%;">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">GBNF Output</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                @if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    <MudAlert Severity="Severity.Error" Class="mb-4">
+                        <strong>Error:</strong> @errorMessage
+                    </MudAlert>
+                }
+                @if (!string.IsNullOrEmpty(gbnfOutput))
+                {
+                    <MudStack>
+                        <MudButton Variant="Variant.Outlined" Size="Size.Small" 
+                                  StartIcon="Icons.Material.Filled.ContentCopy" OnClick="CopyToClipboard">
+                            Copy to Clipboard
+                        </MudButton>
+                        <MudPaper Class="pa-4" Elevation="0" Style="background-color: var(--mud-palette-background-grey);">
+                            <MudText Typo="Typo.body2" Style="white-space: pre-wrap; font-family: 'Consolas', 'Monaco', monospace;">@gbnfOutput</MudText>
+                        </MudPaper>
+                    </MudStack>
+                }
+                else if (!isProcessing)
+                {
+                    <MudText Typo="Typo.body1" Class="mud-text-secondary">
+                        Convert a JSON schema to see the GBNF output here.
+                    </MudText>
+                }
+                else
+                {
+                    <MudStack Row="true" AlignItems="AlignItems.Center">
+                        <MudProgressCircular Size="Size.Small" Indeterminate="true" />
+                        <MudText>Converting...</MudText>
+                    </MudStack>
+                }
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+</MudGrid>
 
-    @if (!string.IsNullOrEmpty(generatedJson))
-    {
-        <div class="row mt-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">Generated JSON Schema</h5>
-                    </div>
-                    <div class="card-body">
-                        <pre class="bg-light p-3 rounded"><code>@generatedJson</code></pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-</div>
+@if (!string.IsNullOrEmpty(generatedJson))
+{
+    <MudCard Elevation="2" Class="mt-6">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h6">Generated JSON Schema</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudPaper Class="pa-4" Elevation="0" Style="background-color: var(--mud-palette-background-grey);">
+                <MudText Typo="Typo.body2" Style="white-space: pre-wrap; font-family: 'Consolas', 'Monaco', monospace;">@generatedJson</MudText>
+            </MudPaper>
+        </MudCardContent>
+    </MudCard>
+}
 
 @code {
-    private bool useBuilder = true;
+    private int activeTabIndex = 0;
     private string jsonSchemaInput = "";
     private string gbnfOutput = "";
     private string generatedJson = "";
@@ -135,19 +130,19 @@
 
     private void LoadPersonExample()
     {
-        useBuilder = true;
+        activeTabIndex = 0;
         ConvertBuilderExample("person");
     }
 
     private void LoadProductExample()
     {
-        useBuilder = true;
+        activeTabIndex = 0;
         ConvertBuilderExample("product");
     }
 
     private void LoadCustomExample()
     {
-        useBuilder = true;
+        activeTabIndex = 0;
         ConvertBuilderExample("custom");
     }
 
@@ -244,11 +239,11 @@
             isProcessing = true;
             errorMessage = "";
             
-            if (useBuilder)
+            if (activeTabIndex == 0) // Builder tab
             {
                 ConvertBuilderExample("person"); // Default to person example if in builder mode
             }
-            else
+            else // Raw JSON tab
             {
                 if (string.IsNullOrWhiteSpace(jsonSchemaInput))
                 {

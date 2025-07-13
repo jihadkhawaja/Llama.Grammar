@@ -3,106 +3,129 @@
 
 <PageTitle>C# Type to GBNF</PageTitle>
 
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="mb-4">C# Type to GBNF Converter</h1>
-            <p class="lead">
-                Generate GBNF grammars directly from predefined C# types. Select from examples or see how different C# constructs translate to GBNF.
-            </p>
-        </div>
-    </div>
+<MudText Typo="Typo.h4" GutterBottom="true">C# Type to GBNF Converter</MudText>
+<MudText Typo="Typo.h6" Class="mb-6 mud-text-secondary">
+    Generate GBNF grammars directly from predefined C# types. Select from examples or see how different C# constructs translate to GBNF.
+</MudText>
 
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">C# Type Examples</h5>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <label class="form-label">Select a C# Type Example</label>
-                        <div class="d-flex gap-2 flex-wrap mb-3">
-                            <button class="btn btn-outline-primary btn-sm" @onclick="LoadPersonExample">Person</button>
-                            <button class="btn btn-outline-primary btn-sm" @onclick="LoadProductExample">Product</button>
-                            <button class="btn btn-outline-primary btn-sm" @onclick="LoadAddressExample">Address</button>
-                            <button class="btn btn-outline-primary btn-sm" @onclick="LoadOrderExample">Order</button>
-                        </div>
+<MudGrid>
+    <MudItem xs="12" lg="6">
+        <MudCard Elevation="2">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">C# Type Examples</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudStack Spacing="4">
+                    <div>
+                        <MudText Typo="Typo.subtitle2" Class="mb-2">Select a C# Type Example</MudText>
+                        <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small">
+                            <MudButton OnClick="LoadPersonExample">Person</MudButton>
+                            <MudButton OnClick="LoadProductExample">Product</MudButton>
+                            <MudButton OnClick="LoadAddressExample">Address</MudButton>
+                            <MudButton OnClick="LoadOrderExample">Order</MudButton>
+                        </MudButtonGroup>
                     </div>
 
                     @if (!string.IsNullOrEmpty(currentTypeCode))
                     {
-                        <div class="mb-3">
-                            <label class="form-label">C# Type Definition</label>
-                            <pre class="bg-light p-3 rounded"><code>@currentTypeCode</code></pre>
+                        <div>
+                            <MudText Typo="Typo.subtitle2" Class="mb-2">C# Type Definition</MudText>
+                            <MudPaper Class="pa-4" Elevation="0" Style="background-color: var(--mud-palette-background-grey);">
+                                <MudText Typo="Typo.body2" Style="white-space: pre-wrap; font-family: 'Consolas', 'Monaco', monospace;">@currentTypeCode</MudText>
+                            </MudPaper>
                         </div>
                     }
-                    
-                    <button class="btn btn-primary" @onclick="ConvertToGbnf" disabled="@isProcessing">
-                        @if (isProcessing)
-                        {
-                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                        }
-                        Convert to GBNF
-                    </button>
 
                     @if (!string.IsNullOrEmpty(errorMessage))
                     {
-                        <div class="alert alert-danger mt-3">
+                        <MudAlert Severity="Severity.Error">
                             <strong>Error:</strong> @errorMessage
-                        </div>
+                        </MudAlert>
                     }
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">GBNF Output</h5>
-                </div>
-                <div class="card-body">
-                    @if (!string.IsNullOrEmpty(gbnfOutput))
-                    {
-                        <div class="mb-3">
-                            <button class="btn btn-outline-secondary btn-sm" @onclick="CopyToClipboard">
-                                Copy to Clipboard
-                            </button>
-                        </div>
-                        <pre class="bg-light p-3 rounded"><code>@gbnfOutput</code></pre>
-                    }
-                    else if (!isProcessing)
-                    {
-                        <p class="text-muted">Select a C# type example and convert it to see the GBNF output here.</p>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
+                </MudStack>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" 
+                          OnClick="ConvertToGbnf" Disabled="isProcessing"
+                          StartIcon="@(isProcessing ? Icons.Material.Filled.HourglassTop : Icons.Material.Filled.Transform)">
+                    Convert to GBNF
+                </MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+    
+    <MudItem xs="12" lg="6">
+        <MudCard Elevation="2" Style="height: 100%;">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">GBNF Output</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                @if (!string.IsNullOrEmpty(gbnfOutput))
+                {
+                    <MudStack>
+                        <MudButton Variant="Variant.Outlined" Size="Size.Small" 
+                                  StartIcon="Icons.Material.Filled.ContentCopy" OnClick="CopyToClipboard">
+                            Copy to Clipboard
+                        </MudButton>
+                        <MudPaper Class="pa-4" Elevation="0" Style="background-color: var(--mud-palette-background-grey);">
+                            <MudText Typo="Typo.body2" Style="white-space: pre-wrap; font-family: 'Consolas', 'Monaco', monospace;">@gbnfOutput</MudText>
+                        </MudPaper>
+                    </MudStack>
+                }
+                else if (!isProcessing)
+                {
+                    <MudText Typo="Typo.body1" Class="mud-text-secondary">
+                        Select a C# type example and convert it to see the GBNF output here.
+                    </MudText>
+                }
+                else
+                {
+                    <MudStack Row="true" AlignItems="AlignItems.Center">
+                        <MudProgressCircular Size="Size.Small" Indeterminate="true" />
+                        <MudText>Converting...</MudText>
+                    </MudStack>
+                }
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+</MudGrid>
 
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">How it Works</h5>
-                </div>
-                <div class="card-body">
-                    <p>
-                        The C# type converter analyzes your class definitions and automatically generates the corresponding GBNF grammar. It supports:
-                    </p>
-                    <ul>
-                        <li><strong>Properties:</strong> Public properties are converted to JSON schema properties</li>
-                        <li><strong>Nested Objects:</strong> Complex types are recursively converted</li>
-                        <li><strong>Collections:</strong> Lists, arrays, and IEnumerable types become array schemas</li>
-                        <li><strong>Nullable Types:</strong> Nullable types allow null values in the schema</li>
-                        <li><strong>Enums:</strong> Enums are converted to constrained string values</li>
-                        <li><strong>Basic Types:</strong> string → "string", int → "integer", bool → "boolean", etc.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<MudCard Elevation="2" Class="mt-6">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">How it Works</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudText Typo="Typo.body1" Class="mb-4">
+            The C# type converter analyzes your class definitions and automatically generates the corresponding GBNF grammar. It supports:
+        </MudText>
+        <MudList T="string">
+            <MudListItem T="string" Icon="Icons.Material.Filled.DataObject">
+                <MudText><strong>Properties:</strong> Public properties are converted to JSON schema properties</MudText>
+            </MudListItem>
+            <MudListItem T="string" Icon="Icons.Material.Filled.AccountTree">
+                <MudText><strong>Nested Objects:</strong> Complex types are recursively converted</MudText>
+            </MudListItem>
+            <MudListItem T="string" Icon="Icons.Material.Filled.ViewList">
+                <MudText><strong>Collections:</strong> Lists, arrays, and IEnumerable types become array schemas</MudText>
+            </MudListItem>
+            <MudListItem T="string" Icon="Icons.Material.Filled.QuestionMark">
+                <MudText><strong>Nullable Types:</strong> Nullable types allow null values in the schema</MudText>
+            </MudListItem>
+            <MudListItem T="string" Icon="Icons.Material.Filled.List">
+                <MudText><strong>Enums:</strong> Enums are converted to constrained string values</MudText>
+            </MudListItem>
+            <MudListItem T="string" Icon="Icons.Material.Filled.Code">
+                <MudText><strong>Basic Types:</strong> string → "string", int → "integer", bool → "boolean", etc.</MudText>
+            </MudListItem>
+        </MudList>
+    </MudCardContent>
+</MudCard>
 
 @code {
     private string currentTypeCode = "";

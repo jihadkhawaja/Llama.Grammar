@@ -4,6 +4,16 @@
 * text=auto
 
 ###############################################################################
+# Language detection overrides to ensure C# is recognized as primary language
+###############################################################################
+*.cs linguist-language=C#
+*.razor linguist-language=C#
+*.cshtml linguist-language=C#
+wwwroot/* linguist-vendored
+bin/* linguist-generated
+obj/* linguist-generated
+
+###############################################################################
 # Set default behavior for command prompt diff.
 #
 # This is need for earlier builds of msysgit that does not have it on by

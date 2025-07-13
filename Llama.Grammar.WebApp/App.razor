@@ -1,4 +1,9 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
+﻿<MudThemeProvider />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
@@ -6,7 +11,11 @@
     <NotFound>
         <PageTitle>Not found</PageTitle>
         <LayoutView Layout="@typeof(MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
+            <MudContainer MaxWidth="MaxWidth.Medium" Class="mt-16">
+                <MudAlert Severity="Severity.Warning">
+                    Sorry, there's nothing at this address.
+                </MudAlert>
+            </MudContainer>
         </LayoutView>
     </NotFound>
 </Router>

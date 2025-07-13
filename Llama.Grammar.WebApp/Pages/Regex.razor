@@ -3,193 +3,175 @@
 
 <PageTitle>Regex to GBNF</PageTitle>
 
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="mb-4">Regular Expression to GBNF Converter</h1>
-            <p class="lead">
-                Convert regular expressions to GBNF grammars for pattern-based text generation in AI models.
-            </p>
-        </div>
-    </div>
+<MudText Typo="Typo.h4" GutterBottom="true">Regular Expression to GBNF Converter</MudText>
+<MudText Typo="Typo.h6" Class="mb-6 mud-text-secondary">
+    Convert regular expressions to GBNF grammars for pattern-based text generation in AI models.
+</MudText>
 
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Regular Expression Input</h5>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <label class="form-label">Examples</label>
-                        <div class="d-flex gap-2 flex-wrap mb-3">
-                            <button class="btn btn-outline-secondary btn-sm" @onclick="LoadEmailExample">Email</button>
-                            <button class="btn btn-outline-secondary btn-sm" @onclick="LoadPhoneExample">Phone</button>
-                            <button class="btn btn-outline-secondary btn-sm" @onclick="LoadDateExample">Date</button>
-                            <button class="btn btn-outline-secondary btn-sm" @onclick="LoadNumberExample">Number</button>
-                            <button class="btn btn-outline-secondary btn-sm" @onclick="LoadCustomExample">Custom</button>
-                        </div>
+<MudGrid>
+    <MudItem xs="12" lg="6">
+        <MudCard Elevation="2">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">Regular Expression Input</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudStack Spacing="4">
+                    <div>
+                        <MudText Typo="Typo.subtitle2" Class="mb-2">Examples</MudText>
+                        <MudButtonGroup Color="Color.Secondary" Variant="Variant.Outlined" Size="Size.Small">
+                            <MudButton OnClick="LoadEmailExample">Email</MudButton>
+                            <MudButton OnClick="LoadPhoneExample">Phone</MudButton>
+                            <MudButton OnClick="LoadDateExample">Date</MudButton>
+                            <MudButton OnClick="LoadNumberExample">Number</MudButton>
+                            <MudButton OnClick="LoadCustomExample">Custom</MudButton>
+                        </MudButtonGroup>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="regexInput" class="form-label">Regular Expression</label>
-                        <input type="text" 
-                               class="form-control font-monospace" 
-                               id="regexInput" 
-                               @bind="regexInput" 
-                               placeholder="Enter your regex pattern here..."
-                               @onkeypress="HandleKeyPress" />
-                    </div>
+                    <MudTextField T="string" @bind-Value="regexInput" 
+                                 Label="Regular Expression" Variant="Variant.Outlined" 
+                                 Placeholder="Enter your regex pattern here..."
+                                 Class="mud-font-family-monospace"
+                                 OnKeyDown="HandleKeyPress" />
 
                     @if (!string.IsNullOrEmpty(currentDescription))
                     {
-                        <div class="alert alert-info">
-                            <small><strong>Pattern:</strong> @currentDescription</small>
-                        </div>
+                        <MudAlert Severity="Severity.Info">
+                            <strong>Pattern:</strong> @currentDescription
+                        </MudAlert>
                     }
-                    
-                    <button class="btn btn-primary" @onclick="ConvertToGbnf" disabled="@(isProcessing || string.IsNullOrWhiteSpace(regexInput))">
-                        @if (isProcessing)
-                        {
-                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                        }
-                        Convert to GBNF
-                    </button>
 
                     @if (!string.IsNullOrEmpty(errorMessage))
                     {
-                        <div class="alert alert-danger mt-3">
+                        <MudAlert Severity="Severity.Error">
                             <strong>Error:</strong> @errorMessage
-                        </div>
+                        </MudAlert>
                     }
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">GBNF Output</h5>
-                </div>
-                <div class="card-body">
-                    @if (!string.IsNullOrEmpty(gbnfOutput))
-                    {
-                        <div class="mb-3">
-                            <button class="btn btn-outline-secondary btn-sm" @onclick="CopyToClipboard">
-                                Copy to Clipboard
-                            </button>
-                        </div>
-                        <pre class="bg-light p-3 rounded"><code>@gbnfOutput</code></pre>
-                    }
-                    else if (!isProcessing)
-                    {
-                        <p class="text-muted">Enter a regular expression and convert it to see the GBNF output here.</p>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
+                </MudStack>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" 
+                          OnClick="ConvertToGbnf" Disabled="@(isProcessing || string.IsNullOrWhiteSpace(regexInput))"
+                          StartIcon="@(isProcessing ? Icons.Material.Filled.HourglassTop : Icons.Material.Filled.Transform)">
+                    Convert to GBNF
+                </MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+    
+    <MudItem xs="12" lg="6">
+        <MudCard Elevation="2" Style="height: 100%;">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">GBNF Output</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                @if (!string.IsNullOrEmpty(gbnfOutput))
+                {
+                    <MudStack>
+                        <MudButton Variant="Variant.Outlined" Size="Size.Small" 
+                                  StartIcon="Icons.Material.Filled.ContentCopy" OnClick="CopyToClipboard">
+                            Copy to Clipboard
+                        </MudButton>
+                        <MudPaper Class="pa-4" Elevation="0" Style="background-color: var(--mud-palette-background-grey);">
+                            <MudText Typo="Typo.body2" Style="white-space: pre-wrap; font-family: 'Consolas', 'Monaco', monospace;">@gbnfOutput</MudText>
+                        </MudPaper>
+                    </MudStack>
+                }
+                else if (!isProcessing)
+                {
+                    <MudText Typo="Typo.body1" Class="mud-text-secondary">
+                        Enter a regular expression and convert it to see the GBNF output here.
+                    </MudText>
+                }
+                else
+                {
+                    <MudStack Row="true" AlignItems="AlignItems.Center">
+                        <MudProgressCircular Size="Size.Small" Indeterminate="true" />
+                        <MudText>Converting...</MudText>
+                    </MudStack>
+                }
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+</MudGrid>
 
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Supported Regex Features</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6>Character Classes</h6>
-                            <ul class="list-unstyled">
-                                <li><code>[abc]</code> - Character set</li>
-                                <li><code>[a-z]</code> - Character range</li>
-                                <li><code>[^abc]</code> - Negated set</li>
-                                <li><code>\d</code> - Digits</li>
-                                <li><code>\w</code> - Word characters</li>
-                                <li><code>\s</code> - Whitespace</li>
-                                <li><code>.</code> - Any character</li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Quantifiers</h6>
-                            <ul class="list-unstyled">
-                                <li><code>*</code> - Zero or more</li>
-                                <li><code>+</code> - One or more</li>
-                                <li><code>?</code> - Zero or one</li>
-                                <li><code>{n}</code> - Exactly n</li>
-                                <li><code>{n,m}</code> - Between n and m</li>
-                                <li><code>{n,}</code> - n or more</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-md-6">
-                            <h6>Anchors & Groups</h6>
-                            <ul class="list-unstyled">
-                                <li><code>^</code> - Start of string</li>
-                                <li><code>$</code> - End of string</li>
-                                <li><code>()</code> - Capturing group</li>
-                                <li><code>(?:)</code> - Non-capturing group</li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Alternation</h6>
-                            <ul class="list-unstyled">
-                                <li><code>|</code> - OR operator</li>
-                                <li><code>\\</code> - Escape character</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<MudCard Elevation="2" Class="mt-6">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">Supported Regex Features</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudGrid>
+            <MudItem xs="12" md="6">
+                <MudText Typo="Typo.h6" Class="mb-2">Character Classes</MudText>
+                <MudList T="string" Dense="true">
+                    <MudListItem T="string"><MudText><code>[abc]</code> - Character set</MudText></MudListItem>
+                    <MudListItem T="string"><MudText><code>[a-z]</code> - Character range</MudText></MudListItem>
+                    <MudListItem T="string"><MudText><code>[^abc]</code> - Negated set</MudText></MudListItem>
+                    <MudListItem T="string"><MudText><code>\d</code> - Digits</MudText></MudListItem>
+                    <MudListItem T="string"><MudText><code>\w</code> - Word characters</MudText></MudListItem>
+                    <MudListItem T="string"><MudText><code>\s</code> - Whitespace</MudText></MudListItem>
+                    <MudListItem T="string"><MudText><code>.</code> - Any character</MudText></MudListItem>
+                </MudList>
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <MudText Typo="Typo.h6" Class="mb-2">Quantifiers</MudText>
+                <MudList T="string" Dense="true">
+                    <MudListItem T="string"><MudText><code>*</code> - Zero or more</MudText></MudListItem>
+                    <MudListItem T="string"><MudText><code>+</code> - One or more</MudText></MudListItem>
+                    <MudListItem T="string"><MudText><code>?</code> - Zero or one</MudText></MudListItem>
+                    <MudListItem T="string"><MudText><code>{n}</code> - Exactly n</MudText></MudListItem>
+                    <MudListItem T="string"><MudText><code>{n,m}</code> - Between n and m</MudText></MudListItem>
+                    <MudListItem T="string"><MudText><code>{n,}</code> - n or more</MudText></MudListItem>
+                </MudList>
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <MudText Typo="Typo.h6" Class="mb-2">Anchors & Groups</MudText>
+                <MudList T="string" Dense="true">
+                    <MudListItem T="string"><MudText><code>^</code> - Start of string</MudText></MudListItem>
+                    <MudListItem T="string"><MudText><code>$</code> - End of string</MudText></MudListItem>
+                    <MudListItem T="string"><MudText><code>()</code> - Capturing group</MudText></MudListItem>
+                    <MudListItem T="string"><MudText><code>(?:)</code> - Non-capturing group</MudText></MudListItem>
+                </MudList>
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <MudText Typo="Typo.h6" Class="mb-2">Alternation</MudText>
+                <MudList T="string" Dense="true">
+                    <MudListItem T="string"><MudText><code>|</code> - OR operator</MudText></MudListItem>
+                    <MudListItem T="string"><MudText><code>\\</code> - Escape character</MudText></MudListItem>
+                </MudList>
+            </MudItem>
+        </MudGrid>
+    </MudCardContent>
+</MudCard>
 
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Example Patterns</h5>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Pattern</th>
-                                    <th>Description</th>
-                                    <th>Example Matches</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><code>^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$</code></td>
-                                    <td>Email address</td>
-                                    <td>user@@example.com, test.email+tag@@domain.co.uk</td>
-                                </tr>
-                                <tr>
-                                    <td><code>^(\+1-?)?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$</code></td>
-                                    <td>US phone number</td>
-                                    <td>123-456-7890, +1-555-123-4567</td>
-                                </tr>
-                                <tr>
-                                    <td><code>^\d{4}-\d{2}-\d{2}$</code></td>
-                                    <td>Date (YYYY-MM-DD)</td>
-                                    <td>2023-12-25, 1999-01-01</td>
-                                </tr>
-                                <tr>
-                                    <td><code>^[A-Z]{2}[0-9]{2}[A-Z0-9]{3}[0-9]{7}([A-Z0-9]?){0,16}$</code></td>
-                                    <td>IBAN code</td>
-                                    <td>GB29NWBK60161331926819</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<MudCard Elevation="2" Class="mt-6">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">Example Patterns</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudTable T="RegexExample" Items="examplePatterns" Dense="true" Hover="true" Striped="true">
+            <HeaderContent>
+                <MudTh>Pattern</MudTh>
+                <MudTh>Description</MudTh>
+                <MudTh>Example Matches</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>
+                    <MudText Typo="Typo.body2" Style="font-family: 'Consolas', 'Monaco', monospace;">@context.Pattern</MudText>
+                </MudTd>
+                <MudTd>@context.Description</MudTd>
+                <MudTd>@context.Examples</MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudCardContent>
+</MudCard>
 
 @code {
     private string regexInput = "";
@@ -198,6 +180,21 @@
     private string errorMessage = "";
     private bool isProcessing = false;
     private IGbnfGrammar grammar = new GbnfGrammar();
+
+    public class RegexExample
+    {
+        public string Pattern { get; set; } = "";
+        public string Description { get; set; } = "";
+        public string Examples { get; set; } = "";
+    }
+
+    private readonly List<RegexExample> examplePatterns = new()
+    {
+        new() { Pattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", Description = "Email address", Examples = "user@example.com, test.email+tag@domain.co.uk" },
+        new() { Pattern = "^(\\+1-?)?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$", Description = "US phone number", Examples = "123-456-7890, +1-555-123-4567" },
+        new() { Pattern = "^\\d{4}-\\d{2}-\\d{2}$", Description = "Date (YYYY-MM-DD)", Examples = "2023-12-25, 1999-01-01" },
+        new() { Pattern = "^[A-Z]{2}[0-9]{2}[A-Z0-9]{3}[0-9]{7}([A-Z0-9]?){0,16}$", Description = "IBAN code", Examples = "GB29NWBK60161331926819" }
+    };
 
     protected override void OnInitialized()
     {
