@@ -31,5 +31,9 @@ window.clipboardFunctions = {
         } catch (err) {
             return { success: false, message: 'Failed to copy text to clipboard: ' + err.message };
         }
+    },
+    
+    isAvailable: function() {
+        return true;
     }
 };

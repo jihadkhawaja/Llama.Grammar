@@ -1,10 +1,11 @@
 using MudBlazor;
+using Microsoft.JSInterop;
 
 namespace Llama.Grammar.WebApp.Services;
 
 public class ThemeService
 {
-    public bool IsDarkMode { get; private set; } = false;
+    public bool IsDarkMode { get; set; } = false;
     public event Action? OnThemeChanged;
 
     public MudTheme Theme => new()
@@ -58,6 +59,26 @@ public class ThemeService
             TextDisabled = "rgba(255,255,255, 0.38)"
         }
     };
+
+    public async Task InitializeFromSystemPreference(IJSRuntime jsRuntime)
+    {
+        try
+        {
+            var systemPrefersDark = await jsRuntime.InvokeAsync<bool>("eval", "window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches");
+            SetDarkMode(systemPrefersDark);
+        }
+        catch
+        {
+            // Fallback to light mode if system preference detection fails
+            SetDarkMode(false);
+        }
+    }
+
+    public void SetDarkMode(bool isDarkMode)
+    {
+        IsDarkMode = isDarkMode;
+        OnThemeChanged?.Invoke();
+    }
 
     public void ToggleTheme()
     {

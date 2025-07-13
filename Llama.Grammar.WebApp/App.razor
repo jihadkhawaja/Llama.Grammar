@@ -1,7 +1,8 @@
 @using Llama.Grammar.WebApp.Services
 @inject ThemeService ThemeService
+@inject IJSRuntime JSRuntime
 
-<MudThemeProvider Theme="ThemeService.Theme" IsDarkMode="ThemeService.IsDarkMode" />
+<MudThemeProvider Theme="ThemeService.Theme" @bind-IsDarkMode="ThemeService.IsDarkMode" />
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
@@ -22,3 +23,14 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await ThemeService.InitializeFromSystemPreference(JSRuntime);
+            StateHasChanged();
+        }
+    }
+}
