@@ -1,4 +1,7 @@
-﻿@inherits LayoutComponentBase
+﻿@using Llama.Grammar.WebApp.Services
+@inject ThemeService ThemeService
+@inherits LayoutComponentBase
+@implements IDisposable
 
 <MudLayout>
     <MudAppBar Elevation="1">
@@ -6,7 +9,9 @@
         <MudSpacer />
         <MudText Typo="Typo.h5" Class="ml-3">Llama.Grammar</MudText>
         <MudSpacer />
-        <MudButton Href="https://learn.microsoft.com/aspnet/core/" Target="_blank" 
+        <MudIconButton Icon="@(ThemeService.IsDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)" 
+                       Color="Color.Inherit" OnClick="@ToggleTheme" Tooltip="Toggle theme" />
+        <MudButton Href="https://github.com/jihadkhawaja/Llama.Grammar" Target="_blank" 
                    StartIcon="Icons.Material.Filled.Info" Color="Color.Inherit">
             About
         </MudButton>
@@ -17,7 +22,7 @@
     </MudDrawer>
     
     <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.Large" Class="pt-4">
+        <MudContainer MaxWidth="MaxWidth.Large" Class="pt-8 px-6">
             @Body
         </MudContainer>
     </MudMainContent>
@@ -26,8 +31,23 @@
 @code {
     bool _drawerOpen = true;
 
+    protected override void OnInitialized()
+    {
+        ThemeService.OnThemeChanged += StateHasChanged;
+    }
+
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
+    }
+
+    void ToggleTheme()
+    {
+        ThemeService.ToggleTheme();
+    }
+
+    public void Dispose()
+    {
+        ThemeService.OnThemeChanged -= StateHasChanged;
     }
 }
