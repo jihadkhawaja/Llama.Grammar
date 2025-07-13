@@ -1,0 +1,73 @@
+name: Deploy Blazor WebApp to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+      
+    - name: Test
+      run: dotnet test --no-build --configuration Release --verbosity normal
+      
+    - name: Publish Blazor WebApp
+      run: dotnet publish Llama.Grammar.WebApp/Llama.Grammar.WebApp.csproj --configuration Release --output ./publish
+      
+    # Fix base path for GitHub Pages
+    - name: Fix base path
+      run: |
+        sed -i 's/<base href="\/" \/>/<base href="\/Llama.Grammar\/" \/>/g' ./publish/wwwroot/index.html
+        
+    # Handle 404s by copying index.html to 404.html for SPA routing
+    - name: Copy index.html to 404.html
+      run: cp ./publish/wwwroot/index.html ./publish/wwwroot/404.html
+      
+    - name: Upload artifacts
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ./publish/wwwroot
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+      
+    steps:
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4

@@ -75,8 +75,17 @@ public class Address
 IGbnfGrammar grammar = new GbnfGrammar();
 var gbnf = grammar.ConvertTypeToGbnf<TestPerson>();
 Console.WriteLine(gbnf);
-
 ```
+
+## Try it Online
+
+🌐 **[Interactive Web App](https://jihadkhawaja.github.io/Llama.Grammar/)** - Try the library functionality directly in your browser!
+
+The web app provides an easy-to-use interface for:
+- Converting JSON schemas to GBNF
+- Converting C# types to GBNF 
+- Converting regular expressions to GBNF
+- Interactive examples and documentation
 
 ## Based on
 

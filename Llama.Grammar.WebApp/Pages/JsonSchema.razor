@@ -1,0 +1,287 @@
+@page "/json-schema"
+@using Llama.Grammar.Service
+@using Llama.Grammar.Helper
+
+<PageTitle>JSON Schema to GBNF</PageTitle>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">JSON Schema to GBNF Converter</h1>
+            <p class="lead">
+                Convert JSON Schema definitions to GBNF grammars. You can either use the fluent builder or provide raw JSON schema.
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="inputTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link @(useBuilder ? "active" : "")" 
+                                    @onclick="() => useBuilder = true" 
+                                    type="button">Builder</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link @(!useBuilder ? "active" : "")" 
+                                    @onclick="() => useBuilder = false" 
+                                    type="button">Raw JSON</button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    @if (useBuilder)
+                    {
+                        <div class="mb-3">
+                            <label class="form-label">Examples</label>
+                            <div class="d-flex gap-2 flex-wrap">
+                                <button class="btn btn-outline-secondary btn-sm" @onclick="LoadPersonExample">Person</button>
+                                <button class="btn btn-outline-secondary btn-sm" @onclick="LoadProductExample">Product</button>
+                                <button class="btn btn-outline-secondary btn-sm" @onclick="LoadCustomExample">Custom</button>
+                            </div>
+                        </div>
+                        <div class="alert alert-info">
+                            <small>Using builder mode - this generates the JSON schema using the fluent API.</small>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="mb-3">
+                            <label for="jsonSchemaInput" class="form-label">JSON Schema</label>
+                            <textarea class="form-control font-monospace" 
+                                     id="jsonSchemaInput" 
+                                     rows="15" 
+                                     @bind="jsonSchemaInput" 
+                                     placeholder="Enter your JSON Schema here..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <button class="btn btn-outline-secondary btn-sm" @onclick="LoadJsonExample">Load Example</button>
+                        </div>
+                    }
+                    
+                    <button class="btn btn-primary" @onclick="ConvertToGbnf" disabled="@isProcessing">
+                        @if (isProcessing)
+                        {
+                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        }
+                        Convert to GBNF
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">GBNF Output</h5>
+                </div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Error:</strong> @errorMessage
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(gbnfOutput))
+                    {
+                        <div class="mb-3">
+                            <button class="btn btn-outline-secondary btn-sm" @onclick="CopyToClipboard">
+                                Copy to Clipboard
+                            </button>
+                        </div>
+                        <pre class="bg-light p-3 rounded"><code>@gbnfOutput</code></pre>
+                    }
+                    else if (!isProcessing)
+                    {
+                        <p class="text-muted">Convert a JSON schema to see the GBNF output here.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(generatedJson))
+    {
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Generated JSON Schema</h5>
+                    </div>
+                    <div class="card-body">
+                        <pre class="bg-light p-3 rounded"><code>@generatedJson</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private bool useBuilder = true;
+    private string jsonSchemaInput = "";
+    private string gbnfOutput = "";
+    private string generatedJson = "";
+    private string errorMessage = "";
+    private bool isProcessing = false;
+    private IGbnfGrammar grammar = new GbnfGrammar();
+
+    protected override void OnInitialized()
+    {
+        LoadPersonExample();
+    }
+
+    private void LoadPersonExample()
+    {
+        useBuilder = true;
+        ConvertBuilderExample("person");
+    }
+
+    private void LoadProductExample()
+    {
+        useBuilder = true;
+        ConvertBuilderExample("product");
+    }
+
+    private void LoadCustomExample()
+    {
+        useBuilder = true;
+        ConvertBuilderExample("custom");
+    }
+
+    private void LoadJsonExample()
+    {
+        jsonSchemaInput = @"{
+  ""type"": ""object"",
+  ""properties"": {
+    ""name"": {
+      ""type"": ""string""
+    },
+    ""age"": {
+      ""type"": ""integer""
+    },
+    ""email"": {
+      ""type"": ""string"",
+      ""pattern"": ""^[^@]+@[^@]+\\.[^@]+$""
+    },
+    ""hobbies"": {
+      ""type"": ""array"",
+      ""items"": {
+        ""type"": ""string""
+      },
+      ""minItems"": 1,
+      ""maxItems"": 5
+    }
+  },
+  ""required"": [""name"", ""age""]
+}";
+    }
+
+    private void ConvertBuilderExample(string example)
+    {
+        try
+        {
+            isProcessing = true;
+            errorMessage = "";
+            
+            SchemaBuilder schemaBuilder = example switch
+            {
+                "person" => new SchemaBuilder()
+                    .Type("object")
+                    .Properties(p => p
+                        .Add("name", s => s.Type("string"))
+                        .Add("age", s => s.Type("integer"))
+                        .Add("nicknames", s => s.Type("array")
+                                                .MinItems(1)
+                                                .MaxItems(3)
+                                                .Items(i => i.Type("string"))))
+                    .Required("name", "age"),
+                
+                "product" => new SchemaBuilder()
+                    .Type("object")
+                    .Properties(p => p
+                        .Add("id", s => s.Type("integer"))
+                        .Add("name", s => s.Type("string"))
+                        .Add("price", s => s.Type("number"))
+                        .Add("category", s => s.Enum("electronics", "clothing", "books", "home"))
+                        .Add("inStock", s => s.Type("boolean"))
+                        .Add("tags", s => s.Type("array").Items(i => i.Type("string"))))
+                    .Required("id", "name", "price"),
+                
+                _ => new SchemaBuilder()
+                    .Type("object")
+                    .Properties(p => p
+                        .Add("status", s => s.Const("success"))
+                        .Add("data", s => s.Type("object")
+                            .Properties(pp => pp
+                                .Add("message", ss => ss.Type("string"))
+                                .Add("timestamp", ss => ss.Type("string").Pattern("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z"))))
+                        .Add("count", s => s.Type("integer")))
+                    .Required("status", "data")
+            };
+
+            generatedJson = schemaBuilder.ToJson();
+            gbnfOutput = grammar.ConvertJsonSchemaToGbnf(generatedJson);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            gbnfOutput = "";
+            generatedJson = "";
+        }
+        finally
+        {
+            isProcessing = false;
+        }
+    }
+
+    private void ConvertToGbnf()
+    {
+        try
+        {
+            isProcessing = true;
+            errorMessage = "";
+            
+            if (useBuilder)
+            {
+                ConvertBuilderExample("person"); // Default to person example if in builder mode
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(jsonSchemaInput))
+                {
+                    errorMessage = "Please provide a JSON schema.";
+                    return;
+                }
+
+                generatedJson = "";
+                gbnfOutput = grammar.ConvertJsonSchemaToGbnf(jsonSchemaInput);
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            gbnfOutput = "";
+        }
+        finally
+        {
+            isProcessing = false;
+        }
+    }
+
+    private async Task CopyToClipboard()
+    {
+        // Note: Clipboard API requires HTTPS in production
+        try
+        {
+            await Task.Run(() => System.Console.WriteLine("Copy to clipboard: " + gbnfOutput));
+            // In a real application, you would use JavaScript interop to copy to clipboard
+        }
+        catch
+        {
+            // Fallback for environments where clipboard isn't available
+        }
+    }
+}

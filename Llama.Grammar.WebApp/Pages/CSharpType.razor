@@ -1,0 +1,294 @@
+@page "/csharp-type"
+@using Llama.Grammar.Service
+
+<PageTitle>C# Type to GBNF</PageTitle>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">C# Type to GBNF Converter</h1>
+            <p class="lead">
+                Generate GBNF grammars directly from predefined C# types. Select from examples or see how different C# constructs translate to GBNF.
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">C# Type Examples</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Select a C# Type Example</label>
+                        <div class="d-flex gap-2 flex-wrap mb-3">
+                            <button class="btn btn-outline-primary btn-sm" @onclick="LoadPersonExample">Person</button>
+                            <button class="btn btn-outline-primary btn-sm" @onclick="LoadProductExample">Product</button>
+                            <button class="btn btn-outline-primary btn-sm" @onclick="LoadAddressExample">Address</button>
+                            <button class="btn btn-outline-primary btn-sm" @onclick="LoadOrderExample">Order</button>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(currentTypeCode))
+                    {
+                        <div class="mb-3">
+                            <label class="form-label">C# Type Definition</label>
+                            <pre class="bg-light p-3 rounded"><code>@currentTypeCode</code></pre>
+                        </div>
+                    }
+                    
+                    <button class="btn btn-primary" @onclick="ConvertToGbnf" disabled="@isProcessing">
+                        @if (isProcessing)
+                        {
+                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        }
+                        Convert to GBNF
+                    </button>
+
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <div class="alert alert-danger mt-3">
+                            <strong>Error:</strong> @errorMessage
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">GBNF Output</h5>
+                </div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(gbnfOutput))
+                    {
+                        <div class="mb-3">
+                            <button class="btn btn-outline-secondary btn-sm" @onclick="CopyToClipboard">
+                                Copy to Clipboard
+                            </button>
+                        </div>
+                        <pre class="bg-light p-3 rounded"><code>@gbnfOutput</code></pre>
+                    }
+                    else if (!isProcessing)
+                    {
+                        <p class="text-muted">Select a C# type example and convert it to see the GBNF output here.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">How it Works</h5>
+                </div>
+                <div class="card-body">
+                    <p>
+                        The C# type converter analyzes your class definitions and automatically generates the corresponding GBNF grammar. It supports:
+                    </p>
+                    <ul>
+                        <li><strong>Properties:</strong> Public properties are converted to JSON schema properties</li>
+                        <li><strong>Nested Objects:</strong> Complex types are recursively converted</li>
+                        <li><strong>Collections:</strong> Lists, arrays, and IEnumerable types become array schemas</li>
+                        <li><strong>Nullable Types:</strong> Nullable types allow null values in the schema</li>
+                        <li><strong>Enums:</strong> Enums are converted to constrained string values</li>
+                        <li><strong>Basic Types:</strong> string → "string", int → "integer", bool → "boolean", etc.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string currentTypeCode = "";
+    private string gbnfOutput = "";
+    private string errorMessage = "";
+    private bool isProcessing = false;
+    private string currentExample = "";
+    private IGbnfGrammar grammar = new GbnfGrammar();
+
+    // Example types
+    public class Person
+    {
+        public string Name { get; set; } = string.Empty;
+        public int Age { get; set; }
+        public List<string> Nicknames { get; set; } = new();
+        public Address? HomeAddress { get; set; }
+    }
+
+    public class Address
+    {
+        public string Street { get; set; } = string.Empty;
+        public string City { get; set; } = string.Empty;
+        public string? ZipCode { get; set; }
+        public string Country { get; set; } = string.Empty;
+    }
+
+    public class Product
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public decimal Price { get; set; }
+        public ProductCategory Category { get; set; }
+        public bool InStock { get; set; }
+        public List<string> Tags { get; set; } = new();
+        public DateTime CreatedAt { get; set; }
+    }
+
+    public enum ProductCategory
+    {
+        Electronics,
+        Clothing,
+        Books,
+        Home,
+        Sports
+    }
+
+    public class Order
+    {
+        public string OrderId { get; set; } = string.Empty;
+        public Person Customer { get; set; } = new();
+        public List<OrderItem> Items { get; set; } = new();
+        public decimal TotalAmount { get; set; }
+        public OrderStatus Status { get; set; }
+        public DateTime OrderDate { get; set; }
+    }
+
+    public class OrderItem
+    {
+        public Product Product { get; set; } = new();
+        public int Quantity { get; set; }
+        public decimal UnitPrice { get; set; }
+    }
+
+    public enum OrderStatus
+    {
+        Pending,
+        Processing,
+        Shipped,
+        Delivered,
+        Cancelled
+    }
+
+    protected override void OnInitialized()
+    {
+        LoadExample("person");
+    }
+
+    private void LoadPersonExample() => LoadExample("person");
+    private void LoadProductExample() => LoadExample("product");
+    private void LoadAddressExample() => LoadExample("address");
+    private void LoadOrderExample() => LoadExample("order");
+
+    private void LoadExample(string example)
+    {
+        currentExample = example;
+        currentTypeCode = example switch
+        {
+            "person" => @"public class Person
+{
+    public string Name { get; set; } = string.Empty;
+    public int Age { get; set; }
+    public List<string> Nicknames { get; set; } = new();
+    public Address? HomeAddress { get; set; }
+}
+
+public class Address
+{
+    public string Street { get; set; } = string.Empty;
+    public string City { get; set; } = string.Empty;
+    public string? ZipCode { get; set; }
+    public string Country { get; set; } = string.Empty;
+}",
+            "product" => @"public class Product
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public decimal Price { get; set; }
+    public ProductCategory Category { get; set; }
+    public bool InStock { get; set; }
+    public List<string> Tags { get; set; } = new();
+    public DateTime CreatedAt { get; set; }
+}
+
+public enum ProductCategory
+{
+    Electronics, Clothing, Books, Home, Sports
+}",
+            "address" => @"public class Address
+{
+    public string Street { get; set; } = string.Empty;
+    public string City { get; set; } = string.Empty;
+    public string? ZipCode { get; set; }
+    public string Country { get; set; } = string.Empty;
+}",
+            "order" => @"public class Order
+{
+    public string OrderId { get; set; } = string.Empty;
+    public Person Customer { get; set; } = new();
+    public List<OrderItem> Items { get; set; } = new();
+    public decimal TotalAmount { get; set; }
+    public OrderStatus Status { get; set; }
+    public DateTime OrderDate { get; set; }
+}
+
+public class OrderItem
+{
+    public Product Product { get; set; } = new();
+    public int Quantity { get; set; }
+    public decimal UnitPrice { get; set; }
+}
+
+public enum OrderStatus
+{
+    Pending, Processing, Shipped, Delivered, Cancelled
+}",
+            _ => ""
+        };
+    }
+
+    private void ConvertToGbnf()
+    {
+        try
+        {
+            isProcessing = true;
+            errorMessage = "";
+            
+            gbnfOutput = currentExample switch
+            {
+                "person" => grammar.ConvertTypeToGbnf<Person>(),
+                "product" => grammar.ConvertTypeToGbnf<Product>(),
+                "address" => grammar.ConvertTypeToGbnf<Address>(),
+                "order" => grammar.ConvertTypeToGbnf<Order>(),
+                _ => ""
+            };
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            gbnfOutput = "";
+        }
+        finally
+        {
+            isProcessing = false;
+        }
+    }
+
+    private async Task CopyToClipboard()
+    {
+        try
+        {
+            await Task.Run(() => System.Console.WriteLine("Copy to clipboard: " + gbnfOutput));
+            // In a real application, you would use JavaScript interop to copy to clipboard
+        }
+        catch
+        {
+            // Fallback for environments where clipboard isn't available
+        }
+    }
+}
