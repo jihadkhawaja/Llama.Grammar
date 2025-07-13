@@ -1,44 +1,20 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Llama.Grammar</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
-
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="json-schema">
-                <span class="bi bi-code-square-nav-menu" aria-hidden="true"></span> JSON Schema
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="csharp-type">
-                <span class="bi bi-braces-nav-menu" aria-hidden="true"></span> C# Type
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="regex">
-                <span class="bi bi-regex-nav-menu" aria-hidden="true"></span> Regex
-            </NavLink>
-        </div>
-    </nav>
-</div>
-
-@code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}
+﻿<MudNavMenu>
+    <MudText Typo="Typo.h6" Class="px-4 py-2">Navigation</MudText>
+    <MudDivider Class="mb-2" />
+    
+    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="Icons.Material.Filled.Home">
+        Home
+    </MudNavLink>
+    
+    <MudNavLink Href="json-schema" Icon="Icons.Material.Filled.Code">
+        JSON Schema
+    </MudNavLink>
+    
+    <MudNavLink Href="csharp-type" Icon="Icons.Material.Filled.DataObject">
+        C# Type
+    </MudNavLink>
+    
+    <MudNavLink Href="regex" Icon="Icons.Material.Filled.Pattern">
+        Regex
+    </MudNavLink>
+</MudNavMenu>

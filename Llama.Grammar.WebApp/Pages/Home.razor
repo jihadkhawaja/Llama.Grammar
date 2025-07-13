@@ -2,85 +2,110 @@
 
 <PageTitle>Llama.Grammar - GBNF Converter</PageTitle>
 
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="display-4 mb-4">Llama.Grammar</h1>
-            <p class="lead">
-                Convert JSON Schemas, C# types, and regular expressions to GBNF (Grammar-Based Next-Token Format) grammars for AI models.
-            </p>
-        </div>
-    </div>
+<MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true" Class="mb-8">
+    Llama.Grammar
+</MudText>
 
-    <div class="row mt-4">
-        <div class="col-md-4 mb-3">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">JSON Schema to GBNF</h5>
-                    <p class="card-text">
-                        Convert JSON Schema definitions to GBNF grammars using our fluent builder API or raw JSON.
-                    </p>
-                    <a href="json-schema" class="btn btn-primary">Try JSON Schema</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">C# Type to GBNF</h5>
-                    <p class="card-text">
-                        Generate GBNF grammars directly from C# class definitions, including nested objects and collections.
-                    </p>
-                    <a href="csharp-type" class="btn btn-primary">Try C# Types</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Regex to GBNF</h5>
-                    <p class="card-text">
-                        Convert regular expressions to GBNF format for pattern-based text generation.
-                    </p>
-                    <a href="regex" class="btn btn-primary">Try Regex</a>
-                </div>
-            </div>
-        </div>
-    </div>
+<MudText Typo="Typo.h6" Align="Align.Center" Class="mb-8 mud-text-secondary">
+    Convert JSON Schemas, C# types, and regular expressions to GBNF (Grammar-Based Next-Token Format) grammars for AI models.
+</MudText>
 
-    <div class="row mt-5">
-        <div class="col-12">
-            <h2>About GBNF</h2>
-            <p>
-                GBNF (Grammar-Based Next-Token Format) is used by AI models like LLaMA, Mistral, and GPT to constrain 
-                their outputs to specific formats and structures. This ensures that the generated text follows your 
-                desired schema, making it perfect for structured data generation, API responses, and more.
-            </p>
-            
-            <h3 class="mt-4">Features</h3>
-            <ul class="list-unstyled">
-                <li>🧱 Fluent builder API for creating JSON Schema objects in C#</li>
-                <li>🧠 Converts JSON Schema to GBNF</li>
-                <li>✅ Supports complex schema features like:
-                    <ul class="mt-2">
-                        <li>Nested objects</li>
-                        <li>Arrays and array constraints</li>
-                        <li>Enums and constants</li>
-                        <li>Required fields</li>
-                        <li>Pattern matching</li>
-                        <li>Nullable types</li>
-                    </ul>
-                </li>
-            </ul>
+<MudGrid>
+    <MudItem xs="12" sm="6" md="4">
+        <MudCard Elevation="2" Class="pa-4" Style="height: 100%;">
+            <MudCardContent>
+                <div class="d-flex align-center mb-4">
+                    <MudIcon Icon="Icons.Material.Filled.Code" Color="Color.Primary" Size="Size.Large" Class="mr-3" />
+                    <MudText Typo="Typo.h5">JSON Schema to GBNF</MudText>
+                </div>
+                <MudText Typo="Typo.body1" Class="mb-4">
+                    Convert JSON Schema definitions to GBNF grammars using our fluent builder API or raw JSON.
+                </MudText>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton Href="json-schema" Color="Color.Primary" Variant="Variant.Filled" StartIcon="Icons.Material.Filled.PlayArrow">
+                    Try JSON Schema
+                </MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+    
+    <MudItem xs="12" sm="6" md="4">
+        <MudCard Elevation="2" Class="pa-4" Style="height: 100%;">
+            <MudCardContent>
+                <div class="d-flex align-center mb-4">
+                    <MudIcon Icon="Icons.Material.Filled.DataObject" Color="Color.Secondary" Size="Size.Large" Class="mr-3" />
+                    <MudText Typo="Typo.h5">C# Type to GBNF</MudText>
+                </div>
+                <MudText Typo="Typo.body1" Class="mb-4">
+                    Generate GBNF grammars directly from C# class definitions, including nested objects and collections.
+                </MudText>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton Href="csharp-type" Color="Color.Secondary" Variant="Variant.Filled" StartIcon="Icons.Material.Filled.PlayArrow">
+                    Try C# Types
+                </MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+    
+    <MudItem xs="12" sm="6" md="4">
+        <MudCard Elevation="2" Class="pa-4" Style="height: 100%;">
+            <MudCardContent>
+                <div class="d-flex align-center mb-4">
+                    <MudIcon Icon="Icons.Material.Filled.Pattern" Color="Color.Tertiary" Size="Size.Large" Class="mr-3" />
+                    <MudText Typo="Typo.h5">Regex to GBNF</MudText>
+                </div>
+                <MudText Typo="Typo.body1" Class="mb-4">
+                    Convert regular expressions to GBNF format for pattern-based text generation.
+                </MudText>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton Href="regex" Color="Color.Tertiary" Variant="Variant.Filled" StartIcon="Icons.Material.Filled.PlayArrow">
+                    Try Regex
+                </MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+</MudGrid>
 
-            <div class="mt-4">
-                <a href="https://github.com/jihadkhawaja/Llama.Grammar" class="btn btn-outline-secondary me-2">
-                    View on GitHub
-                </a>
-                <a href="https://www.nuget.org/packages/Llama.Grammar" class="btn btn-outline-secondary">
-                    NuGet Package
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
+<MudDivider Class="my-8" />
+
+<MudText Typo="Typo.h4" GutterBottom="true">About GBNF</MudText>
+<MudText Typo="Typo.body1" Class="mb-4">
+    GBNF (Grammar-Based Next-Token Format) is used by AI models like LLaMA, Mistral, and GPT to constrain 
+    their outputs to specific formats and structures. This ensures that the generated text follows your 
+    desired schema, making it perfect for structured data generation, API responses, and more.
+</MudText>
+
+<MudText Typo="Typo.h5" GutterBottom="true" Class="mt-6">Features</MudText>
+<MudGrid>
+    <MudItem xs="12" md="6">
+        <MudList T="string">
+            <MudListItem T="string" Icon="Icons.Material.Filled.Build" Text="Fluent builder API for creating JSON Schema objects in C#" />
+            <MudListItem T="string" Icon="Icons.Material.Filled.Psychology" Text="Converts JSON Schema to GBNF" />
+            <MudListItem T="string" Icon="Icons.Material.Filled.CheckCircle" Text="Supports complex schema features:" />
+        </MudList>
+    </MudItem>
+    <MudItem xs="12" md="6">
+        <MudList T="string" Class="ml-4">
+            <MudListItem T="string" Icon="Icons.Material.Filled.DataObject" Text="Nested objects" />
+            <MudListItem T="string" Icon="Icons.Material.Filled.ViewList" Text="Arrays and array constraints" />
+            <MudListItem T="string" Icon="Icons.Material.Filled.List" Text="Enums and constants" />
+            <MudListItem T="string" Icon="Icons.Material.Filled.Star" Text="Required fields" />
+            <MudListItem T="string" Icon="Icons.Material.Filled.Pattern" Text="Pattern matching" />
+            <MudListItem T="string" Icon="Icons.Material.Filled.QuestionMark" Text="Nullable types" />
+        </MudList>
+    </MudItem>
+</MudGrid>
+
+<MudStack Row="true" Spacing="3" Class="mt-8">
+    <MudButton Href="https://github.com/jihadkhawaja/Llama.Grammar" Target="_blank"
+               Color="Color.Info" Variant="Variant.Outlined" StartIcon="Icons.Custom.Brands.GitHub">
+        View on GitHub
+    </MudButton>
+    <MudButton Href="https://www.nuget.org/packages/Llama.Grammar" Target="_blank"
+               Color="Color.Success" Variant="Variant.Outlined" StartIcon="Icons.Material.Filled.Download">
+        NuGet Package
+    </MudButton>
+</MudStack>
