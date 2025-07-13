@@ -1,4 +1,7 @@
-﻿<MudThemeProvider />
+@using Llama.Grammar.WebApp.Services
+@inject ThemeService ThemeService
+
+<MudThemeProvider Theme="ThemeService.Theme" IsDarkMode="ThemeService.IsDarkMode" />
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />

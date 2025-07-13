@@ -1,5 +1,7 @@
 @page "/regex"
 @using Llama.Grammar.Service
+@inject IJSRuntime JSRuntime
+@inject ISnackbar Snackbar
 
 <PageTitle>Regex to GBNF</PageTitle>
 
@@ -272,14 +274,34 @@
 
     private async Task CopyToClipboard()
     {
+        if (string.IsNullOrEmpty(gbnfOutput))
+        {
+            Snackbar.Add("No content to copy", Severity.Warning);
+            return;
+        }
+
         try
         {
-            await Task.Run(() => System.Console.WriteLine("Copy to clipboard: " + gbnfOutput));
-            // In a real application, you would use JavaScript interop to copy to clipboard
+            var result = await JSRuntime.InvokeAsync<ClipboardResult>("clipboardFunctions.writeText", gbnfOutput);
+            
+            if (result.Success)
+            {
+                Snackbar.Add(result.Message, Severity.Success);
+            }
+            else
+            {
+                Snackbar.Add(result.Message, Severity.Error);
+            }
         }
-        catch
+        catch (Exception ex)
         {
-            // Fallback for environments where clipboard isn't available
+            Snackbar.Add($"Failed to copy to clipboard: {ex.Message}", Severity.Error);
         }
+    }
+
+    public class ClipboardResult
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; } = "";
     }
 }
