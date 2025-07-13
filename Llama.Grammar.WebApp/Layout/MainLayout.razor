@@ -10,7 +10,7 @@
         <MudText Typo="Typo.h5" Class="ml-3">Llama.Grammar</MudText>
         <MudSpacer />
         <MudIconButton Icon="@(ThemeService.IsDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)" 
-                       Color="Color.Inherit" OnClick="@ToggleTheme" Tooltip="Toggle theme" />
+                       Color="Color.Inherit" OnClick="@ToggleTheme" />
         <MudButton Href="https://github.com/jihadkhawaja/Llama.Grammar" Target="_blank" 
                    StartIcon="Icons.Material.Filled.Info" Color="Color.Inherit">
             About
@@ -22,7 +22,7 @@
     </MudDrawer>
     
     <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.Large" Class="pt-8 px-6">
+        <MudContainer MaxWidth="MaxWidth.Medium" Class="mt-16">
             @Body
         </MudContainer>
     </MudMainContent>

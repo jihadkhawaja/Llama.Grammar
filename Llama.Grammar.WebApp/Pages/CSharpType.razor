@@ -314,6 +314,15 @@ public enum OrderStatus
 
         try
         {
+            // Check if clipboard functions are available
+            var isAvailable = await JSRuntime.InvokeAsync<bool>("eval", "typeof window.clipboardFunctions !== 'undefined' && typeof window.clipboardFunctions.writeText === 'function'");
+            
+            if (!isAvailable)
+            {
+                Snackbar.Add("Clipboard functionality is not available", Severity.Error);
+                return;
+            }
+
             var result = await JSRuntime.InvokeAsync<ClipboardResult>("clipboardFunctions.writeText", gbnfOutput);
             
             if (result.Success)
