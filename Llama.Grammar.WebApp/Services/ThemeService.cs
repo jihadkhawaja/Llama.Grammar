@@ -80,9 +80,5 @@ public class ThemeService
         OnThemeChanged?.Invoke();
     }
 
-    public void ToggleTheme()
-    {
-        IsDarkMode = !IsDarkMode;
-        OnThemeChanged?.Invoke();
-    }
+
 }
