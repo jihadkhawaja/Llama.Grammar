@@ -6,14 +6,31 @@
 <MudLayout>
     <MudAppBar Elevation="1">
         <MudIconButton Icon="Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <MudSpacer />
-        <MudText Typo="Typo.h5" Class="ml-3">Llama.Grammar</MudText>
-        <MudSpacer />
+        
+        <!-- Logo and title - responsive -->
+        <div style="display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0;">
+            <img src="llama_grammar_icon.png" alt="Llama.Grammar" width="32" height="32" />
+            <MudText Typo="Typo.h6" Class="d-none d-sm-flex" Style="white-space: nowrap;">Llama.Grammar</MudText>
+            <MudText Typo="Typo.body1" Class="d-flex d-sm-none" Style="white-space: nowrap;">LG</MudText>
+        </div>
 
-        <MudButton Href="https://github.com/jihadkhawaja/Llama.Grammar" Target="_blank" 
-                   StartIcon="Icons.Material.Filled.Info" Color="Color.Inherit">
-            About
-        </MudButton>
+        <!-- About button - responsive -->
+        <div class="d-none d-sm-flex">
+            <MudButton Href="https://github.com/jihadkhawaja/Llama.Grammar" Target="_blank" 
+                       StartIcon="@Icons.Material.Filled.Info" 
+                       Color="Color.Inherit"
+                       Variant="Variant.Outlined"
+                       Class="app-bar-button">
+                About
+            </MudButton>
+        </div>
+        <div class="d-flex d-sm-none">
+            <MudIconButton Icon="@Icons.Material.Filled.Info" 
+                           Color="Color.Inherit" 
+                           Href="https://github.com/jihadkhawaja/Llama.Grammar" 
+                           Target="_blank"
+                           Class="app-bar-icon-button" />
+        </div>
     </MudAppBar>
     
     <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">

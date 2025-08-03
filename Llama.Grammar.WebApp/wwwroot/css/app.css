@@ -7,17 +7,17 @@ h1:focus {
 }
 
 a, .btn-link {
-    color: #0071c1;
+    color: #666666;
 }
 
 .btn-primary {
     color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+    background-color: #555555;
+    border-color: #444444;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #888888;
 }
 
 .content {
@@ -82,7 +82,7 @@ a, .btn-link {
     }
 
         .loading-progress circle:last-child {
-            stroke: #594ae2;
+            stroke: #666666;
             stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
             transition: stroke-dasharray 0.05s ease-in-out;
         }
@@ -92,7 +92,7 @@ a, .btn-link {
     text-align: center;
     font-weight: bold;
     inset: calc(20vh + 3.25rem) 0 auto 0.2rem;
-    color: #594ae2;
+    color: #666666;
     font-size: 1.1rem;
 }
 
@@ -108,7 +108,7 @@ a, .btn-link {
     margin: 20vh auto 1rem auto;
     border: 4px solid #e0e0e0;
     border-radius: 50%;
-    border-left-color: #594ae2;
+    border-left-color: #666666;
     animation: spin 1s ease-in-out infinite;
 }
 
@@ -123,16 +123,23 @@ a, .btn-link {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    color: #495057;
 }
 
 .loading-logo {
-    font-size: 2rem;
-    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-bottom: 2rem;
-    color: white;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.loading-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-top: 1rem;
+    color: #495057;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .loading-text {
@@ -147,5 +154,121 @@ a, .btn-link {
 }
 
 code {
-    color: #c02d76;
+    color: #6c757d;
+}
+
+/* MudBlazor button contrast improvements */
+.mud-button {
+    transition: all 0.2s ease-in-out;
+}
+
+.mud-button:hover {
+    background-color: rgba(255,255,255,0.2) !important;
+}
+
+.mud-icon-button:hover {
+    background-color: rgba(255,255,255,0.1) !important;
+}
+
+/* App bar button styles */
+.app-bar-button {
+    background-color: rgba(255,255,255,0.1) !important;
+    color: white !important;
+    border-color: rgba(255,255,255,0.3) !important;
+}
+
+.app-bar-button:hover {
+    background-color: rgba(255,255,255,0.2) !important;
+    border-color: rgba(255,255,255,0.5) !important;
+}
+
+.app-bar-icon-button {
+    background-color: rgba(255,255,255,0.1) !important;
+    color: white !important;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 4px;
+}
+
+.app-bar-icon-button:hover {
+    background-color: rgba(255,255,255,0.2) !important;
+    border-color: rgba(255,255,255,0.5) !important;
+}
+
+/* Ensure button text has good contrast */
+.mud-appbar .mud-button {
+    color: white !important;
+}
+
+.mud-appbar .mud-icon-button {
+    color: white !important;
+}
+
+/* Fix for Material Icons */
+.mud-icon-button .mud-icon-button-icon,
+.mud-button .mud-button-start-icon,
+.mud-icon,
+.mud-button-start-icon-inner {
+    font-family: 'Material Icons' !important;
+    font-weight: normal !important;
+    font-style: normal !important;
+    display: inline-block !important;
+    line-height: 1 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    word-wrap: normal !important;
+    white-space: nowrap !important;
+    direction: ltr !important;
+    -webkit-font-feature-settings: 'liga';
+    font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Fix button icon spacing */
+.mud-button-start-icon {
+    margin-right: 8px !important;
+    margin-left: 0 !important;
+}
+
+.mud-button .mud-button-label {
+    margin-left: 0 !important;
+}
+
+/* Fix card button margins */
+.mud-card-actions .mud-button {
+    margin: 0 !important;
+}
+
+/* Fix list item icon spacing */
+.mud-list-item-icon {
+    margin-right: 16px !important;
+    min-width: 24px !important;
+}
+
+/* Ensure proper icon display */
+.mud-icon {
+    user-select: none;
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    fill: currentColor;
+    flex-shrink: 0;
+    transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    font-size: 1.5rem;
+}
+
+/* Mobile responsive improvements */
+@media (max-width: 600px) {
+    .mud-appbar .mud-container-maxwidth-xl {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+    
+    .mud-appbar img {
+        width: 28px !important;
+        height: 28px !important;
+    }
+    
+    .mud-appbar .mud-toolbar {
+        min-height: 56px !important;
+    }
 }

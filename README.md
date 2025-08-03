@@ -1,3 +1,8 @@
+
+<p align="center">
+  <img src="docs/llama_grammar_icon.png" alt="Llama.Grammar Icon" width="120" />
+</p>
+
 # Llama.Grammar
 
 **Llama.Grammar** is a C# class library that allows you to define JSON Schemas, C# objects dynamically and convert them to [GBNF (Grammar-Based Next-Token Format)](https://github.com/ggml-org/llama.cpp/blob/master/grammars/README.md) grammars. It is useful for working with structured outputs in AI models like LLaMA, Mistral, or GPT when paired with inference runtimes that support GBNF grammars.
